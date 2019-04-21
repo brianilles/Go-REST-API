@@ -42,6 +42,34 @@ func postTodo(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(todo)
 }
 
+func updateTodo(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	params := mux.Vars(r)
+	for i, item := range todos {
+		if item.ID == params["id"] {
+			todos = append(todos[:i], todos[i+1:]...)
+			var todo Todo
+			json.NewDecoder(r.Body).Decode(&todo)
+			todo.ID = params["id"]
+			todos = append(todos, todo)
+			json.NewEncoder(w).Encode(todo)
+			return
+		}
+	}
+}
+
+func deleteTodo(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	params := mux.Vars(r)
+	for i, item := range todos {
+		if item.ID == params["id"] {
+			todos = append(todos[:i], todos[i+1:]...)
+			break
+		}
+	}
+	json.NewEncoder(w).Encode(todos)
+}
+
 func main() {
 	todos = append(todos, Todo{ID: "1", Task: "Make an API with Go", Completed: false}, Todo{ID: "2", Task: "Eat dinner", Completed: false}, Todo{ID: "3", Task: "Go to sleep", Completed: false})
 
@@ -50,6 +78,8 @@ func main() {
 	r.HandleFunc("/api/todos", getTodos).Methods("GET")
 	r.HandleFunc("/api/todos/{id}", getTodo).Methods("GET")
 	r.HandleFunc("/api/todos", postTodo).Methods("POST")
+	r.HandleFunc("/api/todos/{id}", updateTodo).Methods("PUT")
+	r.HandleFunc("/api/todos/{id}", deleteTodo).Methods("DELETE")
 
 	log.Fatal(http.ListenAndServe(":4000", r))
 }

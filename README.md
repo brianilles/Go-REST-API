@@ -8,8 +8,10 @@ Assumes proper Go workspace (learn more here **_https://golang.org/doc/code.html
 
 2. Open Postman to **_http://localhost:4000/api [endpoint]_**
 
-| Endpoint         | Description               |
-| ---------------- | ------------------------- |
-| GET `/todos`     | Returns an array of todos |
-| GET `/todos/:id` | Returns a todo by ID      |
-| POST `/todos`    | Adds a todo               |
+| Endpoint            | Description               |
+| ------------------- | ------------------------- |
+| GET `/todos`        | Returns an array of todos |
+| GET `/todos/:id`    | Returns a todo by ID      |
+| POST `/todos`       | Adds a todo               |
+| PUT `/todos/:id`    | Updates a todo            |
+| DELETE `/todos/:id` | Deletes a todo            |
